@@ -1,0 +1,15 @@
+.nav-link:hover .fa-power-off {
+  color: white !important;
+}
+
+.signoutBtn {
+  border: solid 2px #ed4337;
+  background-color: #f0f0f0;
+  color: #ed4337;
+  transition: all 0.3s;
+}
+
+.signoutBtn:hover {
+  background-color: #ed4337;
+  color: #f0f0f0;
+}

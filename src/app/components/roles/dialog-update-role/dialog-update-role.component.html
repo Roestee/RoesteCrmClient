@@ -1,0 +1,44 @@
+<h2 mat-dialog-title>Kullanıcı Ekle</h2>
+<mat-dialog-content class="mat-typography">
+  <form
+    formValidate
+    #updateForm="ngForm"
+    (ngSubmit)="update(updateForm)"
+    autocomplete="off"
+    [autoValidateMessage]="true"
+  >
+    <div class="m-row">
+      <mat-form-field appearance="fill">
+        <mat-label>İsim</mat-label>
+        <input
+          matInput
+          required
+          minlength="3"
+          name="name"
+          #roleName="ngModel"
+          placeholder="Rol ismi giriniz.."
+          [(ngModel)]="role.name"
+        />
+        <mat-error *ngIf="roleName.errors?.['required']">
+          İsim alanı zorunludur.</mat-error
+        >
+        <mat-error *ngIf="roleName.errors?.['minlength']">
+          İsim en az 3 karakter olmalıdır.
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button type="button" mat-button mat-dialog-close (click)="onCancel()">
+    İptal
+  </button>
+  <button
+    type="submit"
+    mat-button
+    (click)="update(updateForm)"
+    [disabled]="updateForm.invalid"
+  >
+    Güncelle
+  </button>
+</mat-dialog-actions>

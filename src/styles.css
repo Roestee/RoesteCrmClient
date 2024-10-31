@@ -1,0 +1,195 @@
+@import "@angular/material/prebuilt-themes/azure-blue.css";
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+a {
+  cursor: pointer;
+}
+.me-1 {
+  margin-right: 8px;
+}
+.justify-self-start {
+  justify-self: start;
+}
+.justify-self-center {
+  justify-self: center;
+}
+.justify-self-end {
+  justify-self: end;
+}
+.c-modal-title {
+  padding: 5px 10px;
+  border-radius: 7px;
+  background-color: #f0f0f0;
+  font-size: 1.15rem;
+  font-weight: 500;
+}
+mat-label {
+  font-size: 0.9rem;
+  font-weight: 400 !important;
+}
+mat-option {
+  font-size: 0.9rem !important;
+}
+input {
+  font-size: 0.9rem !important;
+}
+.m-row {
+  display: flex;
+  gap: 20px;
+}
+.m-row .mat-mdc-form-field {
+  width: 100%;
+}
+.m-paginator {
+  margin-top: 20px;
+}
+.deleteBtn {
+  margin-left: 10px;
+}
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+.m-table {
+  overflow: auto;
+}
+.actionButtons {
+  text-wrap: nowrap;
+}
+.m-dialog-main-title {
+  text-align: center;
+  margin-bottom: 20px !important;
+  border-bottom: 2px solid #e0e2ec;
+}
+.m-section-title-parent {
+  background-color: #dedede;
+  border-radius: 5px;
+  margin: 0 0 20px 0;
+  padding: 0 10px;
+}
+.m-section-title {
+  font-size: 1.1rem !important;
+  font-weight: 500 !important;
+}
+.m-divider {
+  margin: 0 10px;
+}
+.m-cell {
+  background-color: #f0f0f0;
+  margin: 0 15px;
+  border-radius: 5px;
+  box-shadow: 0 1px 5px #929292;
+  overflow: hidden;
+}
+.m-cell-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #dedede;
+  padding: 0 10px;
+  width: 100%;
+}
+.m-cell-title {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 10px;
+}
+.m-cell-title h3 {
+  font-size: 1rem;
+  margin-bottom: 0;
+}
+.m-cell-title h3 b {
+  font-weight: 600;
+}
+.m-cell-icon {
+  color: #b197fc;
+  font-size: 2.5rem;
+}
+.m-cell-content {
+  display: flex;
+  gap: 50px;
+  padding: 20px 10px;
+}
+.m-cell-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.m-cell-item h5 {
+  font-size: 0.8rem;
+  font-weight: 400;
+  margin-bottom: 0;
+}
+.m-cell-item span {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.m-cell-button-group {
+  display: flex;
+  gap: 5px;
+  padding: 10px;
+}
+.m-cell-button-group .m-cell-btn {
+  width: 200px;
+  border: none;
+  border-left: none;
+  background-color: #dededec7;
+  padding: 5px 0;
+  font-size: 0.9rem;
+  transition: all 0.25s;
+  box-shadow: 0 2px 4px #929292;
+}
+.m-cell-button-group .m-cell-btn:first-child {
+  border-radius: 20px 0 0 20px;
+}
+.m-cell-button-group .m-cell-btn:last-child {
+  border-radius: 0 20px 20px 0;
+}
+.m-cell-btn.selected {
+  background-color: #000f51;
+  color: #f0f0f0;
+  pointer-events: none;
+  box-shadow: 0 2px 4px #000b3e;
+}
+.m-cell-btn.completed {
+  background-color: #1ee400;
+  color: #f0f0f0;
+  box-shadow: 0 2px 4px #18b300;
+}
+.m-cell-btn i.hide {
+  display: none;
+}
+.m-cell-btn:hover {
+  background-color: #b3b3b3;
+}
+.m-cell-btn.completed:hover {
+  background-color: #1ac500;
+}
+.m-expansion-panels {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+}
+.m-cell-submit-btn {
+  margin: 10px;
+  text-align: end;
+}
+.m-cell-content-header-big {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px;
+}
+.m-cell-content-header-big h3 {
+  font-size: 1.3rem;
+  margin: 0;
+}

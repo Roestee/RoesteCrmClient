@@ -1,0 +1,315 @@
+<h2 class="m-dialog-main-title" mat-dialog-title>Yeni Müşteri</h2>
+<mat-dialog-content class="mat-typography">
+  <form
+    formValidate
+    #createForm="ngForm"
+    (ngSubmit)="create(createForm)"
+    autocomplete="off"
+    [autoValidateMessage]="true"
+  >
+    <div class="m-section-title-parent">
+      <h4 class="m-section-title">Müşteri Bilgileri</h4>
+    </div>
+
+    <div class="row" style="gap: 10px">
+      <mat-form-field appearance="fill" class="col">
+        <mat-label>Müşteri Danışmanı</mat-label>
+        <input
+          type="text"
+          matInput
+          [value]="data.model.leadOwner.fullName"
+          readonly
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="col">
+        <mat-label>Müşteri Durumu</mat-label>
+        <mat-select
+          required
+          [(ngModel)]="data.model.leadStatusId"
+          name="createLeadStatus"
+          #leadStatus="ngModel"
+        >
+          <mat-option>-- None --</mat-option>
+          @for (leadStatus of data.leadStatuses; track leadStatus) {
+          <mat-option [value]="leadStatus.id">{{ leadStatus.name }}</mat-option>
+          }
+        </mat-select>
+        <mat-error *ngIf="leadStatus.errors?.['required']">
+          Müşteri durumu alanı zorunludur.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row" style="gap: 10px">
+      <mat-form-field appearance="fill" class="col">
+        <mat-label>Ünvan</mat-label>
+        <mat-select
+          required
+          [(ngModel)]="data.model.salutationId"
+          name="createSalutationId"
+          #salutation="ngModel"
+        >
+          <mat-option>-- None --</mat-option>
+          @for (salutation of data.salutations; track salutation) {
+          <mat-option [value]="salutation.id">{{ salutation.name }}</mat-option>
+          }
+        </mat-select>
+        <mat-error *ngIf="salutation.errors?.['required']">
+          Ünvan alanı zorunludur.
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="col">
+        <mat-label>Telefon</mat-label>
+        <input
+          matInput
+          type="tel"
+          maxlength="10"
+          pattern="[0-9]{10}"
+          name="createPhoneNumber"
+          placeholder="Telefon numarası giriniz.."
+          [(ngModel)]="data.model.phone"
+        />
+      </mat-form-field>
+    </div>
+
+    <div class="row" style="gap: 10px">
+      <mat-form-field appearance="fill" class="col">
+        <mat-label>İsim</mat-label>
+        <input
+          matInput
+          required
+          minlength="3"
+          name="createFirstName"
+          #firstName="ngModel"
+          placeholder="İsim giriniz.."
+          [(ngModel)]="data.model.firstName"
+        />
+        <mat-error *ngIf="firstName.errors?.['required']">
+          İsim alanı zorunludur.</mat-error
+        >
+        <mat-error *ngIf="firstName.errors?.['minlength']">
+          İsim en az 3 karakter olmalıdır.
+        </mat-error>
+      </mat-form-field>
+      <div class="col"></div>
+    </div>
+
+    <div class="row" style="gap: 10px">
+      <mat-form-field appearance="fill" class="col">
+        <mat-label>Soyisim</mat-label>
+        <input
+          matInput
+          required
+          minlength="3"
+          name="createLastName"
+          #lastName="ngModel"
+          placeholder="Soyisim giriniz.."
+          [(ngModel)]="data.model.lastName"
+        />
+        <mat-error *ngIf="lastName.errors?.['required']">
+          Soyisim alanı zorunludur.</mat-error
+        >
+        <mat-error *ngIf="lastName.errors?.['minlength']">
+          Soyisim en az 3 karakter olmalıdır.
+        </mat-error>
+      </mat-form-field>
+      <div class="col"></div>
+    </div>
+
+    <div class="row" style="gap: 10px">
+      <mat-form-field appearance="fill" class="col">
+        <mat-label>Firma</mat-label>
+        <input
+          matInput
+          required
+          minlength="3"
+          name="createCompany"
+          #company="ngModel"
+          placeholder="Firma giriniz.."
+          [(ngModel)]="data.model.company"
+        />
+        <mat-error *ngIf="company.errors?.['required']">
+          Kullanıcı adı alanı zorunludur.</mat-error
+        >
+        <mat-error *ngIf="company.errors?.['minlength']">
+          Kullanıcı adı en az 3 karakter olmalıdır.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="col">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          required
+          email=""
+          type="email"
+          minlength="3"
+          name="email"
+          #email="ngModel"
+          placeholder="Email giriniz.."
+          [(ngModel)]="data.model.email"
+        />
+        <mat-error *ngIf="email.errors?.['required']">
+          Email alanı zorunludur.</mat-error
+        >
+        <mat-error *ngIf="email.errors?.['minlength']">
+          Email uzunluğu en az 3 karakter olmalıdır!</mat-error
+        >
+        <mat-error *ngIf="email.errors?.['email']">
+          Geçerli bir e-posta adresi girin.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row" style="gap: 10px">
+      <mat-form-field appearance="fill" class="col">
+        <mat-label>Hitap</mat-label>
+        <input
+          matInput
+          type="text"
+          name="createTitle"
+          placeholder="Hitap giriniz.."
+          [(ngModel)]="data.model.title"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="col">
+        <mat-label>Derecelendirme</mat-label>
+        <mat-select
+          required
+          [(ngModel)]="data.model.ratingId"
+          name="createRating"
+          #rating="ngModel"
+        >
+          <mat-option>-- None --</mat-option>
+          @for (rating of data.ratings; track rating) {
+          <mat-option [value]="rating.id">{{ rating.name }}</mat-option>
+          }
+        </mat-select>
+        <mat-error *ngIf="rating.errors?.['required']">
+          Derecelendirme alanı zorunludur.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="m-section-title-parent">
+      <h4 class="m-section-title">Adres Bilgileri</h4>
+    </div>
+
+    <div class="row" style="gap: 10px">
+      <mat-form-field appearance="fill" class="col">
+        <mat-label>Ülke</mat-label>
+        <input
+          matInput
+          type="text"
+          name="createCountry"
+          placeholder="Ülke giriniz.."
+          [(ngModel)]="data.model.address.country"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="col">
+        <mat-label>Şehir</mat-label>
+        <input
+          matInput
+          type="text"
+          name="createCity"
+          placeholder="Şehri giriniz.."
+          [(ngModel)]="data.model.address.city"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="col-6">
+        <mat-label>Web Sitesi</mat-label>
+        <input
+          matInput
+          type="text"
+          name="createWebsite"
+          placeholder="Web sitesi giriniz.."
+          [(ngModel)]="data.model.website"
+        />
+      </mat-form-field>
+    </div>
+
+    <div class="row" style="gap: 10px">
+      <mat-form-field appearance="fill" class="col">
+        <mat-label>Adres</mat-label>
+        <textarea
+          matInput
+          name="createAddress"
+          placeholder="Adresi giriniz.."
+          [(ngModel)]="data.model.address.street"
+        ></textarea>
+      </mat-form-field>
+      <div class="col"></div>
+    </div>
+
+    <div class="m-section-title-parent">
+      <h4 class="m-section-title">Diğer Bilgiler</h4>
+    </div>
+
+    <div class="row" style="gap: 10px">
+      <mat-form-field appearance="fill" class="col">
+        <mat-label>Müşteri Kaynağı</mat-label>
+        <mat-select
+          required
+          [(ngModel)]="data.model.leadSourceId"
+          name="createLeadSourceId"
+          #leadSource="ngModel"
+        >
+          <mat-option>-- None --</mat-option>
+          @for (leadSource of data.leadSources; track leadSource) {
+          <mat-option [value]="leadSource.id">{{ leadSource.name }}</mat-option>
+          }
+        </mat-select>
+        <mat-error *ngIf="leadSource.errors?.['required']">
+          Müşteri kaynağı alanı zorunludur.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="col">
+        <mat-label>Sektör</mat-label>
+        <mat-select
+          required
+          [(ngModel)]="data.model.industryId"
+          name="createIndustryId"
+          #industry="ngModel"
+        >
+          <mat-option>-- None --</mat-option>
+          @for (industry of data.industries; track industry) {
+          <mat-option [value]="industry.id">{{ industry.name }}</mat-option>
+          }
+        </mat-select>
+        <mat-error *ngIf="industry.errors?.['required']">
+          Sektör alanı zorunludur.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row" style="gap: 10px">
+      <mat-form-field appearance="fill" class="col">
+        <mat-label>Notlar</mat-label>
+        <textarea
+          matInput
+          name="createDescription"
+          placeholder="Not giriniz.."
+          [(ngModel)]="data.model.description"
+        ></textarea>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button type="button" mat-button mat-dialog-close (click)="onCancel()">
+    İptal
+  </button>
+  <button
+    type="submit"
+    mat-button
+    (click)="create(createForm)"
+    [disabled]="createForm.invalid"
+  >
+    Kaydet
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,172 @@
+<h2 mat-dialog-title>Kullanıcı Ekle</h2>
+<mat-dialog-content class="mat-typography">
+  <form
+    formValidate
+    #createForm="ngForm"
+    (ngSubmit)="create(createForm)"
+    autocomplete="off"
+    [autoValidateMessage]="true"
+  >
+    <div class="m-row">
+      <mat-form-field appearance="fill">
+        <mat-label>İsim</mat-label>
+        <input
+          matInput
+          required
+          minlength="3"
+          name="firstName"
+          #firstName="ngModel"
+          placeholder="İsim giriniz.."
+          [(ngModel)]="user.firstName"
+        />
+        <mat-error *ngIf="firstName.errors?.['required']">
+          İsim alanı zorunludur.</mat-error
+        >
+        <mat-error *ngIf="firstName.errors?.['minlength']">
+          İsim en az 3 karakter olmalıdır.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Soyisim</mat-label>
+        <input
+          matInput
+          required
+          minlength="3"
+          name="lastName"
+          #lastName="ngModel"
+          placeholder="Soyisim giriniz.."
+          [(ngModel)]="user.lastName"
+        />
+        <mat-error *ngIf="lastName.errors?.['required']">
+          Soyisim alanı zorunludur.</mat-error
+        >
+        <mat-error *ngIf="lastName.errors?.['minlength']">
+          Soyisim en az 3 karakter olmalıdır.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="m-row">
+      <mat-form-field appearance="fill">
+        <mat-label>Kullanıcı Adı</mat-label>
+        <input
+          matInput
+          required
+          minlength="3"
+          name="userName"
+          #userName="ngModel"
+          placeholder="Kullanıcı adı giriniz.."
+          [(ngModel)]="user.userName"
+        />
+        <mat-error *ngIf="userName.errors?.['required']">
+          Kullanıcı adı alanı zorunludur.</mat-error
+        >
+        <mat-error *ngIf="userName.errors?.['minlength']">
+          Kullanıcı adı en az 3 karakter olmalıdır.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="m-row">
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          required
+          type="email"
+          minlength="3"
+          name="email"
+          #email="ngModel"
+          placeholder="Email giriniz.."
+          [(ngModel)]="user.email"
+        />
+        <mat-error *ngIf="email.errors?.['required']">
+          Email adı alanı zorunludur.</mat-error
+        >
+        <mat-error *ngIf="email.errors?.['email']">
+          Geçerli bir e-posta adresi girin.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="m-row">
+      <mat-form-field appearance="fill">
+        <mat-label>Telefon</mat-label>
+        <input
+          matInput
+          type="tel"
+          maxlength="10"
+          pattern="[0-9]{10}"
+          name="phoneNumber"
+          placeholder="Telefon numarası giriniz.."
+          [(ngModel)]="user.phoneNumber"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Yetki</mat-label>
+        <mat-select
+          required
+          [(ngModel)]="user.role"
+          name="role"
+          #role="ngModel"
+        >
+          <mat-option>-- None --</mat-option>
+          @for (role of roles; track role) {
+          <mat-option [value]="role.name">{{ role.name }}</mat-option>
+          }
+        </mat-select>
+        <mat-error *ngIf="role.errors?.['required']">
+          Yetki alanı zorunludur.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="m-row">
+      <mat-form-field appearance="fill">
+        <mat-label>Şifre</mat-label>
+        <input
+          matInput
+          required
+          minlength="6"
+          [type]="hidePassword() ? 'password' : 'text'"
+          name="password"
+          [(ngModel)]="user.password"
+          #password="ngModel"
+        />
+        <button
+          type="button"
+          mat-icon-button
+          matSuffix
+          (click)="clickEvent($event)"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hidePassword()"
+        >
+          <mat-icon>{{
+            hidePassword() ? "visibility_off" : "visibility"
+          }}</mat-icon>
+        </button>
+        <mat-error *ngIf="password.errors?.['required']">
+          Yetki alanı zorunludur.
+        </mat-error>
+        <mat-error *ngIf="password.errors?.['minlength']">
+          Şifre en az 6 karakter olmalıdır.
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button type="button" mat-button mat-dialog-close (click)="onCancel()">
+    İptal
+  </button>
+  <button
+    type="submit"
+    mat-button
+    (click)="create(createForm)"
+    [disabled]="createForm.invalid"
+  >
+    Kaydet
+  </button>
+</mat-dialog-actions>

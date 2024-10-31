@@ -1,0 +1,374 @@
+<div class="content-wrapper">
+  <br />
+  <div class="m-cell">
+    <div class="m-cell-header">
+      <div class="m-cell-title">
+        <i class="fa-solid fa-street-view m-cell-icon"></i>
+        <h3>
+          Müşteri
+          <br /><b
+            >{{ leadEnums.model.firstName }} {{ leadEnums.model.lastName }}</b
+          >
+        </h3>
+      </div>
+      <div class="m-cell-title-side">
+        <button mat-raised-button>Danışman Değiştir</button>
+      </div>
+    </div>
+    <div class="m-cell-content">
+      <div class="m-cell-item">
+        <h5>Pozisyon</h5>
+        <span>{{ leadEnums.model.title }}</span>
+      </div>
+      <div class="m-cell-item">
+        <h5>Firma</h5>
+        <span>{{ leadEnums.model.company }}</span>
+      </div>
+      <div class="m-cell-item">
+        <h5>Telefon</h5>
+        <span>{{ leadEnums.model.phone }}</span>
+      </div>
+      <div class="m-cell-item">
+        <h5>Email</h5>
+        <span>{{ leadEnums.model.email }}</span>
+      </div>
+      <div class="m-cell-item">
+        <h5>Danışman</h5>
+        <span>{{ leadEnums.model.leadOwner.fullName }}</span>
+      </div>
+    </div>
+  </div>
+  <br />
+  <div class="m-cell">
+    <div class="m-cell-button-group">
+      @for (leadStatus of leadEnums.leadStatuses; track $index) {
+      <button
+        class="m-cell-btn"
+        (click)="changeLeadStatus(leadStatus)"
+        [ngClass]="{
+          selected: updateModel.leadStatus.name === leadStatus.name,
+          completed: isLeadStatusCompleted(leadStatus)
+        }"
+      >
+        {{ isLeadStatusCompleted(leadStatus) ? "" : leadStatus.name }}
+        <i
+          *ngIf="isLeadStatusCompleted(leadStatus)"
+          class="fa-solid fa-check"
+        ></i>
+      </button>
+      }
+    </div>
+  </div>
+  <br />
+  <div class="m-cell">
+    <form
+      formValidate
+      #updateForm="ngForm"
+      autocomplete="off"
+      [autoValidateMessage]="true"
+    >
+      <div class="m-cell-content-header-big">
+        <h3>Detaylar</h3>
+        <button
+          type="submit"
+          mat-raised-button
+          (click)="submitUpdateForm(updateForm)"
+          [disabled]="updateForm.invalid"
+        >
+          Güncelle
+        </button>
+      </div>
+      <div class="m-expansion-panels">
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title> Müşteri Bilgileri </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="row" style="gap: 10px">
+            <mat-form-field appearance="fill" class="col">
+              <mat-label>Müşteri Danışmanı</mat-label>
+              <input
+                type="text"
+                matInput
+                [value]="updateModel.leadOwner.fullName"
+                readonly
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="col">
+              <mat-label>Pozisyon</mat-label>
+              <input
+                matInput
+                type="text"
+                name="updateTitle"
+                placeholder="Pozisyon giriniz.."
+                [(ngModel)]="updateModel.title"
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="row" style="gap: 10px">
+            <mat-form-field appearance="fill" class="col">
+              <mat-label>Ünvan</mat-label>
+              <mat-select
+                required
+                [(ngModel)]="updateModel.salutationId"
+                name="updateSalutationId"
+                #salutation="ngModel"
+              >
+                <mat-option>-- None --</mat-option>
+                @for (salutation of leadEnums.salutations; track salutation) {
+                <mat-option [value]="salutation.id">{{
+                  salutation.name
+                }}</mat-option>
+                }
+              </mat-select>
+              <mat-error *ngIf="salutation.errors?.['required']">
+                Ünvan alanı zorunludur.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="col">
+              <mat-label>Telefon</mat-label>
+              <input
+                matInput
+                type="tel"
+                maxlength="10"
+                pattern="[0-9]{10}"
+                name="phoneNumber"
+                placeholder="Telefon numarası giriniz.."
+                [(ngModel)]="updateModel.phone"
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="row" style="gap: 10px">
+            <mat-form-field appearance="fill" class="col">
+              <mat-label>İsim</mat-label>
+              <input
+                matInput
+                required
+                minlength="3"
+                name="updateFirstName"
+                #firstName="ngModel"
+                placeholder="İsim giriniz.."
+                [(ngModel)]="updateModel.firstName"
+              />
+              <mat-error *ngIf="firstName.errors?.['required']">
+                İsim alanı zorunludur.</mat-error
+              >
+              <mat-error *ngIf="firstName.errors?.['minlength']">
+                İsim en az 3 karakter olmalıdır.
+              </mat-error>
+            </mat-form-field>
+            <div class="col"></div>
+          </div>
+
+          <div class="row" style="gap: 10px">
+            <mat-form-field appearance="fill" class="col">
+              <mat-label>Soyisim</mat-label>
+              <input
+                matInput
+                required
+                minlength="3"
+                name="updateLastName"
+                #lastName="ngModel"
+                placeholder="Soyisim giriniz.."
+                [(ngModel)]="updateModel.lastName"
+              />
+              <mat-error *ngIf="lastName.errors?.['required']">
+                Soyisim alanı zorunludur.</mat-error
+              >
+              <mat-error *ngIf="lastName.errors?.['minlength']">
+                Soyisim en az 3 karakter olmalıdır.
+              </mat-error>
+            </mat-form-field>
+            <div class="col"></div>
+          </div>
+
+          <div class="row" style="gap: 10px">
+            <mat-form-field appearance="fill" class="col">
+              <mat-label>Firma</mat-label>
+              <input
+                matInput
+                required
+                minlength="3"
+                name="updateCompany"
+                #company="ngModel"
+                placeholder="Firma giriniz.."
+                [(ngModel)]="updateModel.company"
+              />
+              <mat-error *ngIf="company.errors?.['required']">
+                Kullanıcı adı alanı zorunludur.</mat-error
+              >
+              <mat-error *ngIf="company.errors?.['minlength']">
+                Kullanıcı adı en az 3 karakter olmalıdır.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="col">
+              <mat-label>Email</mat-label>
+              <input
+                matInput
+                required
+                email
+                type="email"
+                minlength="3"
+                name="updateEmail"
+                #email="ngModel"
+                placeholder="Email giriniz.."
+                [(ngModel)]="updateModel.email"
+              />
+              <mat-error *ngIf="email.errors?.['required']">
+                Email alanı zorunludur.</mat-error
+              >
+              <mat-error *ngIf="email.errors?.['minlength']">
+                Email uzunluğu en az 3 karakter olmalıdır!</mat-error
+              >
+              <mat-error *ngIf="email.errors?.['email']">
+                Geçerli bir e-posta adresi girin.
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="row" style="gap: 10px">
+            <mat-form-field appearance="fill" class="col">
+              <mat-label>Derecelendirme</mat-label>
+              <mat-select
+                required
+                [(ngModel)]="updateModel.ratingId"
+                name="updateRating"
+                #rating="ngModel"
+              >
+                <mat-option>-- None --</mat-option>
+                @for (rating of leadEnums.ratings; track rating) {
+                <mat-option [value]="rating.id">{{ rating.name }}</mat-option>
+                }
+              </mat-select>
+              <mat-error *ngIf="rating.errors?.['required']">
+                Derecelendirme alanı zorunludur.
+              </mat-error>
+            </mat-form-field>
+            <div class="col"></div>
+          </div>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title> Adres Bilgileri </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="row" style="gap: 10px">
+            <mat-form-field appearance="fill" class="col">
+              <mat-label>Ülke</mat-label>
+              <input
+                matInput
+                type="text"
+                name="updateCountry"
+                placeholder="Ülke giriniz.."
+                [(ngModel)]="updateModel.address.country"
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="col">
+              <mat-label>Şehir</mat-label>
+              <input
+                matInput
+                type="text"
+                name="updateCity"
+                placeholder="Şehri giriniz.."
+                [(ngModel)]="updateModel.address.city"
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="col-6">
+              <mat-label>Web Sitesi</mat-label>
+              <input
+                matInput
+                type="text"
+                name="updateWebsite"
+                placeholder="Web sitesi giriniz.."
+                [(ngModel)]="updateModel.website"
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="row" style="gap: 10px">
+            <mat-form-field appearance="fill" class="col">
+              <mat-label>Adres</mat-label>
+              <textarea
+                matInput
+                name="updateAddress"
+                placeholder="Adresi giriniz.."
+                [(ngModel)]="updateModel.address.street"
+              ></textarea>
+            </mat-form-field>
+            <div class="col"></div>
+          </div>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title> Diğer Bilgiler </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="row" style="gap: 10px">
+            <mat-form-field appearance="fill" class="col">
+              <mat-label>Müşteri Kaynağı</mat-label>
+              <mat-select
+                required
+                [(ngModel)]="updateModel.leadSourceId"
+                name="updateLeadSourceId"
+                #leadSource="ngModel"
+              >
+                <mat-option>-- None --</mat-option>
+                @for (leadSource of leadEnums.leadSources; track leadSource) {
+                <mat-option [value]="leadSource.id">{{
+                  leadSource.name
+                }}</mat-option>
+                }
+              </mat-select>
+              <mat-error *ngIf="leadSource.errors?.['required']">
+                Müşteri kaynağı alanı zorunludur.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="col">
+              <mat-label>Sektör</mat-label>
+              <mat-select
+                required
+                [(ngModel)]="updateModel.industryId"
+                name="updateIndustryId"
+                #industry="ngModel"
+              >
+                <mat-option>-- None --</mat-option>
+                @for (industry of leadEnums.industries; track industry) {
+                <mat-option [value]="industry.id">{{
+                  industry.name
+                }}</mat-option>
+                }
+              </mat-select>
+              <mat-error *ngIf="industry.errors?.['required']">
+                Sektör alanı zorunludur.
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="row" style="gap: 10px">
+            <mat-form-field appearance="fill" class="col">
+              <mat-label>Notlar</mat-label>
+              <textarea
+                matInput
+                name="updateDescription"
+                placeholder="Not giriniz.."
+                [(ngModel)]="updateModel.description"
+              ></textarea>
+            </mat-form-field>
+          </div>
+        </mat-expansion-panel>
+      </div>
+      <div class="m-cell-submit-btn"></div>
+    </form>
+  </div>
+  <br />
+</div>

@@ -1,0 +1,151 @@
+<app-blank pageName="Müşteriler" [routes]="['Müşteriler']">
+  <app-section sectionTitle="Müşteri Listesi">
+    <div class="form-group row">
+      <div class="col-9">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="openCreateLeadDialog()"
+        >
+          <i class="fa-solid fa-plus" style="margin-right: 5px"></i> Müşteri
+          Ekle
+        </button>
+      </div>
+
+      <div class="col-3">
+        <mat-form-field>
+          <mat-label>Filtre</mat-label>
+          <input
+            matInput
+            (keyup)="applyFilter($event)"
+            placeholder="Aranacak değeri girin.."
+            #input
+          />
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="form-group mt-2 m-table">
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        matSort
+        class="mat-elevation-z8"
+      >
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>#</th>
+          <td mat-cell *matCellDef="let i = index">{{ i + 1 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="fullName">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="Sort by fullName"
+          >
+            İsim
+          </th>
+          <td mat-cell *matCellDef="let lead">
+            {{ lead.fullName }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="company">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="Sort by company"
+          >
+            Firma
+          </th>
+          <td mat-cell *matCellDef="let lead">
+            {{ lead.company }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="city">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="Sort by city"
+          >
+            Şehir
+          </th>
+          <td mat-cell *matCellDef="let lead">
+            {{ lead.city }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="Sort by email"
+          >
+            Email
+          </th>
+          <td mat-cell *matCellDef="let lead">
+            {{ lead.email }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="leadStatusName">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="Sort by lead status name"
+          >
+            Müşteri Durumu
+          </th>
+          <td mat-cell *matCellDef="let lead">
+            {{ lead.leadStatusName }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="createdDate">
+          <th mat-header-cell *matHeaderCellDef>Oluşturma Tarihi</th>
+          <td mat-cell *matCellDef="let lead">
+            {{ lead.createdDate | date : "dd.MM.yyyy" }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="update">
+          <th mat-header-cell *matHeaderCellDef>İşlemler</th>
+          <td class="actionButtons" mat-cell *matCellDef="let lead">
+            <button
+              routerLink="/lead-details/{{ lead.id }}"
+              mat-mini-fab
+              color="secondary"
+            >
+              <i class="fa-solid fa-edit"></i>
+            </button>
+            <button mat-mini-fab (click)="deleteById(lead)" class="deleteBtn">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">
+            Eşleşen veri bulunamadı! "{{ input.value }}"
+          </td>
+        </tr>
+      </table>
+
+      <mat-paginator
+        [pageSizeOptions]="[5, 10, 25, 100]"
+        showFirstLastButtons
+        aria-label="Müşteri için sayfa seç"
+        class="m-paginator"
+      ></mat-paginator>
+    </div>
+  </app-section>
+</app-blank>

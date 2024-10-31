@@ -1,0 +1,47 @@
+<body class="hold-transition login-page">
+  <div class="login-box">
+    <div class="card card-outline card-m-primary">
+      <div class="card-header text-center">
+        <a class="h1">Roeste <b>CRM</b></a>
+      </div>
+      <div class="card-body">
+        <p class="login-box-msg">Giriş yapmak için bilgilerinizi giriniz</p>
+        <div class="input-group mb-3">
+          <mat-form-field appearance="fill">
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              [(ngModel)]="model.emailOrUserName"
+              type="email"
+              placeholder="Email adresinizi giriniz.."
+            />
+            <mat-icon matSuffix>mail</mat-icon>
+          </mat-form-field>
+        </div>
+        <mat-form-field appearance="fill">
+          <mat-label>Şifre</mat-label>
+          <input
+            matInput
+            [(ngModel)]="model.password"
+            [type]="hidePassword() ? 'password' : 'text'"
+            placeholder="Şifrenizi giriniz.."
+            #password="ngModel"
+          />
+          <button
+            type="button"
+            mat-icon-button
+            matSuffix
+            (click)="clickEvent($event)"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hidePassword()"
+          >
+            <mat-icon>{{
+              hidePassword() ? "visibility_off" : "visibility"
+            }}</mat-icon>
+          </button>
+        </mat-form-field>
+        <button (click)="signIn()" class="btn btn-m-primary" autofocus>Giriş Yap</button>
+      </div>
+    </div>
+  </div>
+</body>
