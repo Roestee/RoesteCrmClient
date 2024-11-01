@@ -26,6 +26,7 @@ export class LeadDetailsComponent implements OnInit {
   leadId: string = '';
   leadEnums: LeadEnumsModel = new LeadEnumsModel();
   updateModel: LeadModel = new LeadModel();
+  isReadonly: boolean = true;
 
   constructor(
     private leadService: LeadService,
@@ -36,7 +37,7 @@ export class LeadDetailsComponent implements OnInit {
     private industryService: IndustryService,
     private swal: SwalService,
     private activated: ActivatedRoute,
-    private auth: AuthService,
+    private auth: AuthService
   ) {
     this.activated.params.subscribe((res) => {
       this.leadId = res['id'];
@@ -55,6 +56,8 @@ export class LeadDetailsComponent implements OnInit {
     if (form.valid) {
       this.update();
     }
+
+    this.toggleReadonly();
   }
 
   changeLeadStatus(leadStatus: LeadStatusModel) {
@@ -71,7 +74,6 @@ export class LeadDetailsComponent implements OnInit {
     this.leadService.update(this.updateModel, (res, message) => {
       this.leadEnums.model = res;
       this.updateModel = { ...res };
-
       if (message) {
         this.swal.callToast(message, 'info');
       }
@@ -128,5 +130,9 @@ export class LeadDetailsComponent implements OnInit {
     }
 
     return false;
+  }
+
+  toggleReadonly() {
+    this.isReadonly = !this.isReadonly;
   }
 }

@@ -79,12 +79,13 @@ export class HttpService {
       .put<ResultModel<T>>(`${api}/${apiUrl}`, body, {
         headers: {
           Authorization: 'Bearer ' + this.auth.token,
+          Accept: 'application/json',
         },
       })
       .subscribe({
         next: (res) => {
           if (res.data) {
-            callBack(res.data);
+            callBack(res.data, res.successMessage);
           }
         },
         error: (err: HttpErrorResponse) => {
@@ -111,7 +112,7 @@ export class HttpService {
       .subscribe({
         next: (res) => {
           if (res.data) {
-            callBack(res.data);
+            callBack(res.data, res.successMessage);
           }
         },
         error: (err: HttpErrorResponse) => {

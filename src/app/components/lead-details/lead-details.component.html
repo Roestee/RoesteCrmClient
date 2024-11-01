@@ -69,15 +69,26 @@
     >
       <div class="m-cell-content-header-big">
         <h3>Detaylar</h3>
-        <button
-          type="submit"
-          mat-raised-button
-          (click)="submitUpdateForm(updateForm)"
-          [disabled]="updateForm.invalid"
-        >
-          Güncelle
-        </button>
+        <div class="m-button-groups" *ngIf="!isReadonly">
+          <button
+            type="button"
+            mat-raised-button
+            (click)="toggleReadonly()"
+            [color]="'warn'"
+          >
+            İptal
+          </button>
+          <button
+            type="submit"
+            mat-raised-button
+            (click)="submitUpdateForm(updateForm)"
+            [disabled]="updateForm.invalid"
+          >
+            Güncelle
+          </button>
+        </div>
       </div>
+
       <div class="m-expansion-panels">
         <mat-expansion-panel [expanded]="true">
           <mat-expansion-panel-header>
@@ -85,7 +96,10 @@
           </mat-expansion-panel-header>
 
           <div class="row" style="gap: 10px">
-            <mat-form-field appearance="fill" class="col">
+            <mat-form-field
+              [appearance]="isReadonly ? 'fill' : 'outline'"
+              class="col"
+            >
               <mat-label>Müşteri Danışmanı</mat-label>
               <input
                 type="text"
@@ -95,7 +109,10 @@
               />
             </mat-form-field>
 
-            <mat-form-field appearance="fill" class="col">
+            <mat-form-field
+              [appearance]="isReadonly ? 'fill' : 'outline'"
+              class="col"
+            >
               <mat-label>Pozisyon</mat-label>
               <input
                 matInput
@@ -103,32 +120,55 @@
                 name="updateTitle"
                 placeholder="Pozisyon giriniz.."
                 [(ngModel)]="updateModel.title"
+                [readonly]="isReadonly"
               />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="toggleReadonly()"
+                *ngIf="isReadonly"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
             </mat-form-field>
           </div>
 
           <div class="row" style="gap: 10px">
-            <mat-form-field appearance="fill" class="col">
-              <mat-label>Ünvan</mat-label>
-              <mat-select
-                required
-                [(ngModel)]="updateModel.salutationId"
-                name="updateSalutationId"
-                #salutation="ngModel"
+            <div class="col select-container">
+              <mat-form-field
+                [appearance]="isReadonly ? 'fill' : 'outline'"
+                [class.readonly]="isReadonly"
               >
-                <mat-option>-- None --</mat-option>
-                @for (salutation of leadEnums.salutations; track salutation) {
-                <mat-option [value]="salutation.id">{{
-                  salutation.name
-                }}</mat-option>
-                }
-              </mat-select>
-              <mat-error *ngIf="salutation.errors?.['required']">
-                Ünvan alanı zorunludur.
-              </mat-error>
-            </mat-form-field>
+                <mat-label>Ünvan</mat-label>
+                <mat-select
+                  required
+                  [(ngModel)]="updateModel.salutationId"
+                  name="updateSalutationId"
+                  #salutation="ngModel"
+                  [ngClass]="{ 'readonly-select': isReadonly }"
+                >
+                  <mat-option>-- None --</mat-option>
+                  @for (salutation of leadEnums.salutations; track salutation) {
+                  <mat-option [value]="salutation.id">{{
+                    salutation.name
+                  }}</mat-option>
+                  }
+                </mat-select>
+                <mat-error *ngIf="salutation.errors?.['required']">
+                  Ünvan alanı zorunludur.
+                </mat-error>
+              </mat-form-field>
+              <button
+                (click)="toggleReadonly()"
+                class="overlay"
+                *ngIf="isReadonly"
+              ></button>
+            </div>
 
-            <mat-form-field appearance="fill" class="col">
+            <mat-form-field
+              [appearance]="isReadonly ? 'fill' : 'outline'"
+              class="col"
+            >
               <mat-label>Telefon</mat-label>
               <input
                 matInput
@@ -138,12 +178,24 @@
                 name="phoneNumber"
                 placeholder="Telefon numarası giriniz.."
                 [(ngModel)]="updateModel.phone"
+                [readonly]="isReadonly"
               />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="toggleReadonly()"
+                *ngIf="isReadonly"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
             </mat-form-field>
           </div>
 
           <div class="row" style="gap: 10px">
-            <mat-form-field appearance="fill" class="col">
+            <mat-form-field
+              [appearance]="isReadonly ? 'fill' : 'outline'"
+              class="col"
+            >
               <mat-label>İsim</mat-label>
               <input
                 matInput
@@ -153,7 +205,16 @@
                 #firstName="ngModel"
                 placeholder="İsim giriniz.."
                 [(ngModel)]="updateModel.firstName"
+                [readonly]="isReadonly"
               />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="toggleReadonly()"
+                *ngIf="isReadonly"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
               <mat-error *ngIf="firstName.errors?.['required']">
                 İsim alanı zorunludur.</mat-error
               >
@@ -165,7 +226,10 @@
           </div>
 
           <div class="row" style="gap: 10px">
-            <mat-form-field appearance="fill" class="col">
+            <mat-form-field
+              [appearance]="isReadonly ? 'fill' : 'outline'"
+              class="col"
+            >
               <mat-label>Soyisim</mat-label>
               <input
                 matInput
@@ -175,7 +239,16 @@
                 #lastName="ngModel"
                 placeholder="Soyisim giriniz.."
                 [(ngModel)]="updateModel.lastName"
+                [readonly]="isReadonly"
               />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="toggleReadonly()"
+                *ngIf="isReadonly"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
               <mat-error *ngIf="lastName.errors?.['required']">
                 Soyisim alanı zorunludur.</mat-error
               >
@@ -187,7 +260,10 @@
           </div>
 
           <div class="row" style="gap: 10px">
-            <mat-form-field appearance="fill" class="col">
+            <mat-form-field
+              [appearance]="isReadonly ? 'fill' : 'outline'"
+              class="col"
+            >
               <mat-label>Firma</mat-label>
               <input
                 matInput
@@ -197,7 +273,16 @@
                 #company="ngModel"
                 placeholder="Firma giriniz.."
                 [(ngModel)]="updateModel.company"
+                [readonly]="isReadonly"
               />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="toggleReadonly()"
+                *ngIf="isReadonly"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
               <mat-error *ngIf="company.errors?.['required']">
                 Kullanıcı adı alanı zorunludur.</mat-error
               >
@@ -206,7 +291,10 @@
               </mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="fill" class="col">
+            <mat-form-field
+              [appearance]="isReadonly ? 'fill' : 'outline'"
+              class="col"
+            >
               <mat-label>Email</mat-label>
               <input
                 matInput
@@ -218,7 +306,16 @@
                 #email="ngModel"
                 placeholder="Email giriniz.."
                 [(ngModel)]="updateModel.email"
+                [readonly]="isReadonly"
               />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="toggleReadonly()"
+                *ngIf="isReadonly"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
               <mat-error *ngIf="email.errors?.['required']">
                 Email alanı zorunludur.</mat-error
               >
@@ -232,23 +329,31 @@
           </div>
 
           <div class="row" style="gap: 10px">
-            <mat-form-field appearance="fill" class="col">
-              <mat-label>Derecelendirme</mat-label>
-              <mat-select
-                required
-                [(ngModel)]="updateModel.ratingId"
-                name="updateRating"
-                #rating="ngModel"
-              >
-                <mat-option>-- None --</mat-option>
-                @for (rating of leadEnums.ratings; track rating) {
-                <mat-option [value]="rating.id">{{ rating.name }}</mat-option>
-                }
-              </mat-select>
-              <mat-error *ngIf="rating.errors?.['required']">
-                Derecelendirme alanı zorunludur.
-              </mat-error>
-            </mat-form-field>
+            <div class="col select-container">
+              <mat-form-field [appearance]="isReadonly ? 'fill' : 'outline'">
+                <mat-label>Derecelendirme</mat-label>
+                <mat-select
+                  required
+                  [(ngModel)]="updateModel.ratingId"
+                  name="updateRating"
+                  #rating="ngModel"
+                >
+                  <mat-option>-- None --</mat-option>
+                  @for (rating of leadEnums.ratings; track rating) {
+                  <mat-option [value]="rating.id">{{ rating.name }}</mat-option>
+                  }
+                </mat-select>
+                <mat-error *ngIf="rating.errors?.['required']">
+                  Derecelendirme alanı zorunludur.
+                </mat-error>
+              </mat-form-field>
+              <button
+                (click)="toggleReadonly()"
+                class="overlay"
+                *ngIf="isReadonly"
+              ></button>
+            </div>
+
             <div class="col"></div>
           </div>
         </mat-expansion-panel>
@@ -259,7 +364,10 @@
           </mat-expansion-panel-header>
 
           <div class="row" style="gap: 10px">
-            <mat-form-field appearance="fill" class="col">
+            <mat-form-field
+              [appearance]="isReadonly ? 'fill' : 'outline'"
+              class="col"
+            >
               <mat-label>Ülke</mat-label>
               <input
                 matInput
@@ -267,10 +375,22 @@
                 name="updateCountry"
                 placeholder="Ülke giriniz.."
                 [(ngModel)]="updateModel.address.country"
+                [readonly]="isReadonly"
               />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="toggleReadonly()"
+                *ngIf="isReadonly"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
             </mat-form-field>
 
-            <mat-form-field appearance="fill" class="col">
+            <mat-form-field
+              [appearance]="isReadonly ? 'fill' : 'outline'"
+              class="col"
+            >
               <mat-label>Şehir</mat-label>
               <input
                 matInput
@@ -278,10 +398,22 @@
                 name="updateCity"
                 placeholder="Şehri giriniz.."
                 [(ngModel)]="updateModel.address.city"
+                [readonly]="isReadonly"
               />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="toggleReadonly()"
+                *ngIf="isReadonly"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
             </mat-form-field>
 
-            <mat-form-field appearance="fill" class="col-6">
+            <mat-form-field
+              [appearance]="isReadonly ? 'fill' : 'outline'"
+              class="col-6"
+            >
               <mat-label>Web Sitesi</mat-label>
               <input
                 matInput
@@ -289,18 +421,31 @@
                 name="updateWebsite"
                 placeholder="Web sitesi giriniz.."
                 [(ngModel)]="updateModel.website"
+                [readonly]="isReadonly"
               />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="toggleReadonly()"
+                *ngIf="isReadonly"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
             </mat-form-field>
           </div>
 
           <div class="row" style="gap: 10px">
-            <mat-form-field appearance="fill" class="col">
+            <mat-form-field
+              [appearance]="isReadonly ? 'fill' : 'outline'"
+              class="col"
+            >
               <mat-label>Adres</mat-label>
               <textarea
                 matInput
                 name="updateAddress"
                 placeholder="Adresi giriniz.."
                 [(ngModel)]="updateModel.address.street"
+                [readonly]="isReadonly"
               ></textarea>
             </mat-form-field>
             <div class="col"></div>
@@ -313,61 +458,78 @@
           </mat-expansion-panel-header>
 
           <div class="row" style="gap: 10px">
-            <mat-form-field appearance="fill" class="col">
-              <mat-label>Müşteri Kaynağı</mat-label>
-              <mat-select
-                required
-                [(ngModel)]="updateModel.leadSourceId"
-                name="updateLeadSourceId"
-                #leadSource="ngModel"
-              >
-                <mat-option>-- None --</mat-option>
-                @for (leadSource of leadEnums.leadSources; track leadSource) {
-                <mat-option [value]="leadSource.id">{{
-                  leadSource.name
-                }}</mat-option>
-                }
-              </mat-select>
-              <mat-error *ngIf="leadSource.errors?.['required']">
-                Müşteri kaynağı alanı zorunludur.
-              </mat-error>
-            </mat-form-field>
+            <div class="col select-container">
+              <mat-form-field [appearance]="isReadonly ? 'fill' : 'outline'">
+                <mat-label>Müşteri Kaynağı</mat-label>
+                <mat-select
+                  required
+                  [(ngModel)]="updateModel.leadSourceId"
+                  name="updateLeadSourceId"
+                  #leadSource="ngModel"
+                >
+                  <mat-option>-- None --</mat-option>
+                  @for (leadSource of leadEnums.leadSources; track leadSource) {
+                  <mat-option [value]="leadSource.id">{{
+                    leadSource.name
+                  }}</mat-option>
+                  }
+                </mat-select>
+                <mat-error *ngIf="leadSource.errors?.['required']">
+                  Müşteri kaynağı alanı zorunludur.
+                </mat-error>
+              </mat-form-field>
+              <button
+                (click)="toggleReadonly()"
+                class="overlay"
+                *ngIf="isReadonly"
+              ></button>
+            </div>
 
-            <mat-form-field appearance="fill" class="col">
-              <mat-label>Sektör</mat-label>
-              <mat-select
-                required
-                [(ngModel)]="updateModel.industryId"
-                name="updateIndustryId"
-                #industry="ngModel"
-              >
-                <mat-option>-- None --</mat-option>
-                @for (industry of leadEnums.industries; track industry) {
-                <mat-option [value]="industry.id">{{
-                  industry.name
-                }}</mat-option>
-                }
-              </mat-select>
-              <mat-error *ngIf="industry.errors?.['required']">
-                Sektör alanı zorunludur.
-              </mat-error>
-            </mat-form-field>
+            <div class="col select-container">
+              <mat-form-field [appearance]="isReadonly ? 'fill' : 'outline'">
+                <mat-label>Sektör</mat-label>
+                <mat-select
+                  required
+                  [(ngModel)]="updateModel.industryId"
+                  name="updateIndustryId"
+                  #industry="ngModel"
+                >
+                  <mat-option>-- None --</mat-option>
+                  @for (industry of leadEnums.industries; track industry) {
+                  <mat-option [value]="industry.id">{{
+                    industry.name
+                  }}</mat-option>
+                  }
+                </mat-select>
+                <mat-error *ngIf="industry.errors?.['required']">
+                  Sektör alanı zorunludur.
+                </mat-error>
+              </mat-form-field>
+              <button
+                (click)="toggleReadonly()"
+                class="overlay"
+                *ngIf="isReadonly"
+              ></button>
+            </div>
           </div>
 
           <div class="row" style="gap: 10px">
-            <mat-form-field appearance="fill" class="col">
+            <mat-form-field
+              [appearance]="isReadonly ? 'fill' : 'outline'"
+              class="col"
+            >
               <mat-label>Notlar</mat-label>
               <textarea
                 matInput
                 name="updateDescription"
                 placeholder="Not giriniz.."
                 [(ngModel)]="updateModel.description"
+                [readonly]="isReadonly"
               ></textarea>
             </mat-form-field>
           </div>
         </mat-expansion-panel>
       </div>
-      <div class="m-cell-submit-btn"></div>
     </form>
   </div>
   <br />
