@@ -1,0 +1,284 @@
+<h2 class="m-dialog-main-title" mat-dialog-title>Yeni Hesap</h2>
+<mat-dialog-content class="mat-typography">
+  <form
+    formValidate
+    #createForm="ngForm"
+    (ngSubmit)="create(createForm)"
+    autocomplete="off"
+    [autoValidateMessage]="true"
+  >
+    <div class="m-section-title-parent">
+      <h4 class="m-section-title">Hesap Bilgileri</h4>
+    </div>
+
+    <div class="row" style="gap: 10px">
+      <mat-form-field appearance="fill" class="col">
+        <mat-label>Müşteri Danışmanı</mat-label>
+        <input
+          type="text"
+          matInput
+          [value]="data.model.accountOwner.fullName"
+          readonly
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="col">
+        <mat-label>Hesap Türü</mat-label>
+        <mat-select
+          required
+          [(ngModel)]="data.model.accountTypeId"
+          name="createAccountTypes"
+          #accountType="ngModel"
+        >
+          <mat-option>-- None --</mat-option>
+          @for (accountType of data.accountTypes; track accountType) {
+          <mat-option [value]="accountType.id">{{
+            accountType.name
+          }}</mat-option>
+          }
+        </mat-select>
+        <mat-error *ngIf="accountType.errors?.['required']">
+          Hesap türü alanı zorunludur.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row" style="gap: 10px">
+      <mat-form-field appearance="fill" class="col">
+        <mat-label>Hesap İsmi</mat-label>
+        <input
+          matInput
+          required
+          minlength="3"
+          name="createAccountName"
+          #accountName="ngModel"
+          placeholder="Hesap ismi giriniz.."
+          [(ngModel)]="data.model.name"
+        />
+        <mat-error *ngIf="accountName.errors?.['required']">
+          İsim alanı zorunludur.</mat-error
+        >
+        <mat-error *ngIf="accountName.errors?.['minlength']">
+          İsim en az 3 karakter olmalıdır.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="col">
+        <mat-label>Telefon</mat-label>
+        <input
+          matInput
+          type="tel"
+          maxlength="10"
+          pattern="[0-9]{10}"
+          name="createPhoneNumber"
+          placeholder="Telefon numarası giriniz.."
+          [(ngModel)]="data.model.phone"
+        />
+      </mat-form-field>
+    </div>
+
+    <div class="row" style="gap: 10px">
+      <mat-form-field appearance="fill" class="col">
+        <mat-label>Sektör</mat-label>
+        <mat-select
+          required
+          [(ngModel)]="data.model.industryId"
+          name="createIndustry"
+          #industry="ngModel"
+        >
+          <mat-option>-- None --</mat-option>
+          @for (industry of data.industries; track industry) {
+          <mat-option [value]="industry.id">{{ industry.name }}</mat-option>
+          }
+        </mat-select>
+        <mat-error *ngIf="industry.errors?.['required']">
+          Sektör alanı zorunludur.
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="col">
+        <mat-label>E-Mail</mat-label>
+        <input
+          matInput
+          required
+          minlength="3"
+          type="email"
+          name="createAccountEmail"
+          #email="ngModel"
+          placeholder="Email giriniz.."
+          [(ngModel)]="data.model.email"
+        />
+        <mat-error *ngIf="email.errors?.['required']">
+          Email alanı zorunludur.</mat-error
+        >
+        <mat-error *ngIf="email.errors?.['minlength']">
+          Email en az 3 karakter olmalıdır.
+        </mat-error>
+        <mat-error *ngIf="email.errors?.['email']">
+          Geçerli bir mail adresi giriniz.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="m-section-title-parent">
+      <h4 class="m-section-title">Ek Bilgiler</h4>
+    </div>
+
+    <div class="row" style="gap: 10px">
+      <mat-form-field appearance="fill" class="col">
+        <mat-label>Web Adresi</mat-label>
+        <input
+          matInput
+          type="text"
+          name="createWebsite"
+          placeholder="Site giriniz.."
+          [(ngModel)]="data.model.website"
+        />
+      </mat-form-field>
+      <div class="col"></div>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill" class="col">
+        <mat-label>Açıklamalar</mat-label>
+        <textarea
+          matInput
+          name="createDescription"
+          placeholder="Açıklama giriniz.."
+          [(ngModel)]="data.model.description"
+        ></textarea>
+      </mat-form-field>
+    </div>
+
+    <div class="m-section-title-parent">
+      <h4 class="m-section-title">Adres Bilgileri</h4>
+    </div>
+
+    <div class="row" style="gap: 10px">
+      <div class="col">
+        <div class="row">
+          <div class="col">
+            <h3 class="accountAddressTitle">Fatura Adresi</h3>
+          </div>
+        </div>
+        <div class="row" style="gap: 10px">
+          <mat-form-field appearance="fill" class="col">
+            <mat-label>Ülke</mat-label>
+            <input
+              matInput
+              type="text"
+              name="createCountry"
+              placeholder="Ülke giriniz.."
+              [(ngModel)]="data.model.billingAddress.country"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="col">
+            <mat-label>Şehir</mat-label>
+            <input
+              matInput
+              type="text"
+              name="createCity"
+              placeholder="Şehri giriniz.."
+              [(ngModel)]="data.model.billingAddress.city"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="row" style="gap: 10px">
+          <mat-form-field appearance="fill" class="col">
+            <mat-label>Posta Kodu</mat-label>
+            <input
+              matInput
+              type="text"
+              name="createPostalCode"
+              placeholder="Posta kodu giriniz.."
+              [(ngModel)]="data.model.billingAddress.postalCode"
+            />
+          </mat-form-field>
+          <div class="col"></div>
+        </div>
+
+        <div class="row">
+          <mat-form-field appearance="fill" class="col">
+            <mat-label>Adres</mat-label>
+            <textarea
+              matInput
+              name="createAddress"
+              placeholder="Adresi giriniz.."
+              [(ngModel)]="data.model.billingAddress.street"
+            ></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col">
+        <div class="row">
+          <div class="col">
+            <h3 class="accountAddressTitle">Kargo Adresi</h3>
+          </div>
+        </div>
+        <div class="row" style="gap: 10px">
+          <mat-form-field appearance="fill" class="col">
+            <mat-label>Ülke</mat-label>
+            <input
+              matInput
+              type="text"
+              name="createShippingCountry"
+              placeholder="Ülke giriniz.."
+              [(ngModel)]="data.model.shippingAddress.country"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="col">
+            <mat-label>Şehir</mat-label>
+            <input
+              matInput
+              type="text"
+              name="createShippingCity"
+              placeholder="Şehri giriniz.."
+              [(ngModel)]="data.model.shippingAddress.city"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="row" style="gap: 10px">
+          <mat-form-field appearance="fill" class="col">
+            <mat-label>Posta Kodu</mat-label>
+            <input
+              matInput
+              type="text"
+              name="createShippingPostalCode"
+              placeholder="Posta kodu giriniz.."
+              [(ngModel)]="data.model.shippingAddress.postalCode"
+            />
+          </mat-form-field>
+          <div class="col"></div>
+        </div>
+
+        <div class="row">
+          <mat-form-field appearance="fill" class="col">
+            <mat-label>Adres</mat-label>
+            <textarea
+              matInput
+              name="createShippingAddress"
+              placeholder="Adresi giriniz.."
+              [(ngModel)]="data.model.shippingAddress.street"
+            ></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button type="button" mat-button mat-dialog-close (click)="onCancel()">
+    İptal
+  </button>
+  <button
+    type="submit"
+    mat-button
+    (click)="create(createForm)"
+    [disabled]="createForm.invalid"
+  >
+    Kaydet
+  </button>
+</mat-dialog-actions>

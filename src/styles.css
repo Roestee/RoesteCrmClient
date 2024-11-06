@@ -205,7 +205,16 @@ input {
   z-index: 1;
   border: none;
 }
-.m-button-groups{
+.m-button-groups {
+  display: flex;
+  gap: 10px;
+}
+.accountAddressTitle {
+  font-size: 1.2rem !important;
+  font-weight: 500 !important;
+  margin: 0 !important;
+}
+.m-cell-title-side {
   display: flex;
   gap: 10px;
 }

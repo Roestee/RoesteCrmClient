@@ -1,0 +1,429 @@
+<div class="content-wrapper">
+  <br />
+  <div class="m-cell">
+    <div class="m-cell-header">
+      <div class="m-cell-title">
+        <i class="fa-solid fa-street-view m-cell-icon"></i>
+        <h3>
+          Hesap
+          <br /><b>{{ accountEnums.model.name }}</b>
+        </h3>
+      </div>
+      <div class="m-cell-title-side">
+        <button (click)="delete()" mat-raised-button color="warn">Sil</button>
+        <button mat-raised-button>Danışman Değiştir</button>
+      </div>
+    </div>
+    <div class="m-cell-content">
+      <div class="m-cell-item">
+        <h5>Danışman</h5>
+        <span>{{ accountEnums.model.accountOwner.fullName }}</span>
+      </div>
+      <div class="m-cell-item">
+        <h5>Sektör</h5>
+        <span>{{ accountEnums.model.industry.name }}</span>
+      </div>
+      <div class="m-cell-item">
+        <h5>Telefon</h5>
+        <span>{{ accountEnums.model.phone }}</span>
+      </div>
+      <div class="m-cell-item">
+        <h5>Email</h5>
+        <span>{{ accountEnums.model.email }}</span>
+      </div>
+    </div>
+  </div>
+  <br />
+  <div class="m-cell">
+    <form
+      formValidate
+      #updateForm="ngForm"
+      autocomplete="off"
+      [autoValidateMessage]="true"
+    >
+      <div class="m-cell-content-header-big">
+        <h3>Detaylar</h3>
+        <div class="m-button-groups" *ngIf="!isReadonly">
+          <button
+            type="button"
+            mat-raised-button
+            (click)="toggleReadonly()"
+            color="warn"
+          >
+            İptal
+          </button>
+          <button
+            type="submit"
+            mat-raised-button
+            (click)="submitUpdateForm(updateForm)"
+            [disabled]="updateForm.invalid"
+          >
+            Güncelle
+          </button>
+        </div>
+      </div>
+
+      <div class="m-expansion-panels">
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title> Hesap Bilgileri </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="row" style="gap: 10px">
+            <mat-form-field
+              [appearance]="isReadonly ? 'fill' : 'outline'"
+              class="col"
+            >
+              <mat-label>Hesap Danışmanı</mat-label>
+              <input
+                type="text"
+                matInput
+                [value]="updateModel.accountOwner.fullName"
+                readonly
+              />
+            </mat-form-field>
+
+            <mat-form-field
+              [appearance]="isReadonly ? 'fill' : 'outline'"
+              class="col"
+            >
+              <mat-label>Email</mat-label>
+              <input
+                matInput
+                required
+                email
+                type="email"
+                minlength="3"
+                name="updateEmail"
+                #email="ngModel"
+                placeholder="Email giriniz.."
+                [(ngModel)]="updateModel.email"
+                [readonly]="isReadonly"
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="toggleReadonly()"
+                *ngIf="isReadonly"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <mat-error *ngIf="email.errors?.['required']">
+                Email alanı zorunludur.</mat-error
+              >
+              <mat-error *ngIf="email.errors?.['minlength']">
+                Email uzunluğu en az 3 karakter olmalıdır!</mat-error
+              >
+              <mat-error *ngIf="email.errors?.['email']">
+                Geçerli bir e-posta adresi girin.
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="row" style="gap: 10px">
+            <mat-form-field
+              [appearance]="isReadonly ? 'fill' : 'outline'"
+              class="col"
+            >
+              <mat-label>İsim</mat-label>
+              <input
+                matInput
+                required
+                minlength="3"
+                name="updateName"
+                #firstName="ngModel"
+                placeholder="Hesap ismi giriniz.."
+                [(ngModel)]="updateModel.name"
+                [readonly]="isReadonly"
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="toggleReadonly()"
+                *ngIf="isReadonly"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <mat-error *ngIf="firstName.errors?.['required']">
+                İsim alanı zorunludur.</mat-error
+              >
+              <mat-error *ngIf="firstName.errors?.['minlength']">
+                İsim en az 3 karakter olmalıdır.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field
+              [appearance]="isReadonly ? 'fill' : 'outline'"
+              class="col"
+            >
+              <mat-label>Telefon</mat-label>
+              <input
+                matInput
+                type="tel"
+                maxlength="10"
+                pattern="[0-9]{10}"
+                name="phoneNumber"
+                placeholder="Telefon numarası giriniz.."
+                [(ngModel)]="updateModel.phone"
+                [readonly]="isReadonly"
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="toggleReadonly()"
+                *ngIf="isReadonly"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+
+          <div class="row" style="gap: 10px">
+            <div class="col select-container">
+              <mat-form-field [appearance]="isReadonly ? 'fill' : 'outline'">
+                <mat-label>Hesap Türü</mat-label>
+                <mat-select
+                  required
+                  [(ngModel)]="updateModel.accountTypeId"
+                  name="updateAccountType"
+                  #accountType="ngModel"
+                >
+                  <mat-option>-- None --</mat-option>
+                  @for (accountType of accountEnums.accountTypes; track
+                  accountType) {
+                  <mat-option [value]="accountType.id">{{
+                    accountType.name
+                  }}</mat-option>
+                  }
+                </mat-select>
+                <mat-error *ngIf="accountType.errors?.['required']">
+                  Hesap türü alanı zorunludur.
+                </mat-error>
+              </mat-form-field>
+              <button
+                (click)="toggleReadonly()"
+                class="overlay"
+                *ngIf="isReadonly"
+              ></button>
+            </div>
+
+            <div class="col select-container">
+              <mat-form-field [appearance]="isReadonly ? 'fill' : 'outline'">
+                <mat-label>Sektör</mat-label>
+                <mat-select
+                  required
+                  [(ngModel)]="updateModel.industryId"
+                  name="updateIndustry"
+                  #industry="ngModel"
+                >
+                  <mat-option>-- None --</mat-option>
+                  @for (industry of accountEnums.industries; track industry) {
+                  <mat-option [value]="industry.id">{{
+                    industry.name
+                  }}</mat-option>
+                  }
+                </mat-select>
+                <mat-error *ngIf="industry.errors?.['required']">
+                  Sektör alanı zorunludur.
+                </mat-error>
+              </mat-form-field>
+              <button
+                (click)="toggleReadonly()"
+                class="overlay"
+                *ngIf="isReadonly"
+              ></button>
+            </div>
+          </div>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Diğer Bilgiler</mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="row" style="gap: 10px">
+            <mat-form-field
+              [appearance]="isReadonly ? 'fill' : 'outline'"
+              class="col"
+            >
+              <mat-label>Web Sitesi</mat-label>
+              <input
+                matInput
+                type="text"
+                name="updateWebSite"
+                placeholder="Web sitesi giriniz.."
+                [(ngModel)]="updateModel.website"
+                [readonly]="isReadonly"
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="toggleReadonly()"
+                *ngIf="isReadonly"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+            </mat-form-field>
+            <div class="col"></div>
+          </div>
+
+          <div class="row" style="gap: 10px">
+            <mat-form-field
+              [appearance]="isReadonly ? 'fill' : 'outline'"
+              class="col"
+            >
+              <mat-label>Notlar</mat-label>
+              <textarea
+                matInput
+                name="updateDescription"
+                placeholder="Not giriniz.."
+                [(ngModel)]="updateModel.description"
+                [readonly]="isReadonly"
+              ></textarea>
+            </mat-form-field>
+          </div>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title> Adres Bilgileri </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="row" style="gap: 10px">
+            <div class="col">
+              <div class="row" style="gap: 10px">
+                <mat-form-field
+                  [appearance]="isReadonly ? 'fill' : 'outline'"
+                  class="col"
+                >
+                  <mat-label>Ülke</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    name="updateBillingCountry"
+                    placeholder="Ülke giriniz.."
+                    [(ngModel)]="updateModel.billingAddress.country"
+                    [readonly]="isReadonly"
+                  />
+                  <button
+                    mat-icon-button
+                    matSuffix
+                    (click)="toggleReadonly()"
+                    *ngIf="isReadonly"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                </mat-form-field>
+
+                <mat-form-field
+                  [appearance]="isReadonly ? 'fill' : 'outline'"
+                  class="col"
+                >
+                  <mat-label>Şehir</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    name="updateBillingCity"
+                    placeholder="Şehri giriniz.."
+                    [(ngModel)]="updateModel.billingAddress.city"
+                    [readonly]="isReadonly"
+                  />
+                  <button
+                    mat-icon-button
+                    matSuffix
+                    (click)="toggleReadonly()"
+                    *ngIf="isReadonly"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+
+              <div class="row" style="gap: 10px">
+                <mat-form-field
+                  [appearance]="isReadonly ? 'fill' : 'outline'"
+                  class="col"
+                >
+                  <mat-label>Adres</mat-label>
+                  <textarea
+                    matInput
+                    name="updateBillingAddress"
+                    placeholder="Adresi giriniz.."
+                    [(ngModel)]="updateModel.billingAddress.street"
+                    [readonly]="isReadonly"
+                  ></textarea>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col">
+              <div class="row" style="gap: 10px">
+                <mat-form-field
+                  [appearance]="isReadonly ? 'fill' : 'outline'"
+                  class="col"
+                >
+                  <mat-label>Ülke</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    name="updateShippingCountry"
+                    placeholder="Ülke giriniz.."
+                    [(ngModel)]="updateModel.shippingAddress.country"
+                    [readonly]="isReadonly"
+                  />
+                  <button
+                    mat-icon-button
+                    matSuffix
+                    (click)="toggleReadonly()"
+                    *ngIf="isReadonly"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                </mat-form-field>
+
+                <mat-form-field
+                  [appearance]="isReadonly ? 'fill' : 'outline'"
+                  class="col"
+                >
+                  <mat-label>Şehir</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    name="updateShippingCity"
+                    placeholder="Şehri giriniz.."
+                    [(ngModel)]="updateModel.shippingAddress.city"
+                    [readonly]="isReadonly"
+                  />
+                  <button
+                    mat-icon-button
+                    matSuffix
+                    (click)="toggleReadonly()"
+                    *ngIf="isReadonly"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+
+              <div class="row" style="gap: 10px">
+                <mat-form-field
+                  [appearance]="isReadonly ? 'fill' : 'outline'"
+                  class="col"
+                >
+                  <mat-label>Adres</mat-label>
+                  <textarea
+                    matInput
+                    name="updateShippingAddress"
+                    placeholder="Adresi giriniz.."
+                    [(ngModel)]="updateModel.shippingAddress.street"
+                    [readonly]="isReadonly"
+                  ></textarea>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </div>
+    </form>
+  </div>
+  <br />
+</div>

@@ -120,7 +120,6 @@ export class LeadsComponent implements OnInit {
   create() {
     this.createModelInit();
     this.leadService.create(this.createModel, (res, message) => {
-      this.createModel;
       this.leads.push(res);
       this.setDataSource();
       this.createModel = new LeadModel();

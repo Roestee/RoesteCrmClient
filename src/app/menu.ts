@@ -64,4 +64,12 @@ export const Menus: MenuModel[] = [
     roles: ['Admin', 'Manager', 'User'],
     subMenus: [],
   },
+  {
+    name: 'Hesap İşlemleri',
+    icon: 'far fa-solid fa-user-group',
+    url: '/accounts',
+    isTitle: false,
+    roles: ['Admin', 'Manager', 'User'],
+    subMenus: [],
+  },
 ];
