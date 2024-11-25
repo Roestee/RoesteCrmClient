@@ -10,6 +10,8 @@ import { LeadsComponent } from './components/leads/leads.component';
 import { LeadDetailsComponent } from './components/lead-details/lead-details.component';
 import { AccountsComponent } from './components/accounts/accounts.component';
 import { AccountDetailsComponent } from './components/account-details/account-details.component';
+import { ContactsComponent } from './components/contacts/contacts.component';
+import { ContactDetailsComponent } from './components/contact-details/contact-details.component';
 
 export const routes: Routes = [
   {
@@ -54,6 +56,16 @@ export const routes: Routes = [
         path: 'account-details/:id',
         component: AccountDetailsComponent,
         canActivate: [() => inject(AuthService).isPermitted('/accounts')],
+      },
+      {
+        path: 'contacts',
+        component: ContactsComponent,
+        canActivate: [() => inject(AuthService).isPermitted('/contacts')],
+      },
+      {
+        path: 'contact-details/:id',
+        component: ContactDetailsComponent,
+        canActivate: [() => inject(AuthService).isPermitted('/contacts')],
       },
     ],
   },

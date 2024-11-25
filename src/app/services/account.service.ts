@@ -13,7 +13,7 @@ export class AccountService {
   }
 
   getById(id: string, callBack: (res: AccountModel) => void) {
-    this.http.get(`Accounts/GetByIdWithDetail/${id}`, callBack);
+    this.http.get<AccountModel>(`Accounts/GetByIdWithDetail/${id}`, callBack);
   }
 
   create(

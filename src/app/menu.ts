@@ -66,8 +66,16 @@ export const Menus: MenuModel[] = [
   },
   {
     name: 'Hesap İşlemleri',
-    icon: 'far fa-solid fa-user-group',
+    icon: 'far fa-solid fa-building',
     url: '/accounts',
+    isTitle: false,
+    roles: ['Admin', 'Manager', 'User'],
+    subMenus: [],
+  },
+  {
+    name: 'İrtibat İşlemleri',
+    icon: 'far fa-solid fa-address-book',
+    url: '/contacts',
     isTitle: false,
     roles: ['Admin', 'Manager', 'User'],
     subMenus: [],
